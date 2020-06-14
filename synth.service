@@ -1,0 +1,27 @@
+[Unit]
+Description=Fluidsynth with soundfont
+
+BindsTo=jack.service
+After=jack.service
+
+Before=keyboard.service
+Wants=keyboard.service
+
+[Service]
+LimitNICE=-15
+LimitRTPRIO=99
+
+# Configure path to your soundfonts
+Environment=SOUNDFONT=/opt/soundfonts/YDPGrandPiano.sf2
+#Environment=SOUNDFONT=/usr/share/sounds/sf2/TimGM6mb.sf2
+#Environment=SOUNDFONT=/usr/share/sounds/sf2/FluidR3_GM.sf2
+
+Type=simple
+# Wait for JACK to start
+ExecStartPre=/bin/sleep 2
+# Configure appropriate sample rate & buffer size
+ExecStart=/usr/bin/fluidsynth -C0 -R0 --server --no-shell -l --audio-driver=jack --audio-bufcount=2 --midi-driver=jack --sample-rate=48000 --audio-bufsize=64 -o synth.polyphony=64 --connect-jack-outputs --gain 1 --load-config=/opt/soundfonts/midi_router.txt  ${SOUNDFONT}
+
+[Install]
+#WantedBy=multi-user.target
+WantedBy=default.target

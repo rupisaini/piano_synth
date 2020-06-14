@@ -1,0 +1,9 @@
+router_clear
+router_begin note
+router_chan 0 7 0 15
+router_end
+
+router_begin cc
+router_chan 0 7 0 15
+router_par1 64 64 1 0
+router_end

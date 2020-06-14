@@ -1,0 +1,17 @@
+[Unit]
+Description=Jack Audio for synth
+
+[Service]
+# Grant your self the right to use such limits in /etc/security/limits.d/
+LimitNICE=-15
+LimitRTPRIO=99
+# Configure DEVICE environment variable to the ALSA name of your output device
+Type=simple
+Environment=DEVICE=hw:DAC
+Environment=JACK_NO_AUDIO_RESERVATION=1
+# Configure appropriate period size/count and sample-rate
+ExecStart=/usr/bin/jackd --realtime -dalsa -d${DEVICE} -n2 -p128 -r48000 -Xraw
+
+[Install]
+#WantedBy=multi-user.target
+WantedBy=default.target

@@ -1,0 +1,14 @@
+[Unit]
+Description=Connect MIDI keyboard to Fluidsynth
+
+[Service]
+Type=oneshot
+# Wait for synth to start
+ExecStartPre=/bin/sleep 9
+# Configure regexes as appropriate
+#ExecStart=/bin/sh -c "/usr/bin/jack_connect $(jack_lsp | grep -xP 'system:midi_capture_\\d+' | tail -n1) $(jack_lsp | grep -xP 'fluidsynth:midi_\\d+' | tail -n1)"
+ExecStart=/bin/sh -c "/usr/bin/jack_connect $(jack_lsp | grep -xP 'system:midi_capture_\d+' | tail -n1) $(jack_lsp | grep -xP 'fluidsynth:midi_\d+' | tail -n1)"
+
+[Install]
+#WantedBy=multi-user.target
+WantedBy=default.target
